@@ -6,9 +6,16 @@ export default class tableForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            fullName: "d",
-            email: "f",
-            salary: 0
+            fullName: "",
+            email: "",
+            salary: 0,
+            usersList: [
+                {
+                    fullName: "Shakhzod M",
+                    email: "Shakhzod@gmail.com",
+                    salary: 100000,
+                },
+            ],
         }
     }
 
@@ -21,15 +28,22 @@ export default class tableForm extends Component {
         console.log(name)
     }
 
-    saveDta = (e) => {
+    saveData = (e) => {
         e.preventDefault()
         const { fullName, email, salary } = this.state
-        let obj = {
+        let newUser = {
             fullName,
             email,
             salary
         }
-        console.log(obj)
+        console.log(newUser)
+
+        this.setState({
+            fullName: "",
+            email: "",
+            salary: 0,
+            usersList: [...this.state.usersList, newUser],
+        })
     }
 
 
@@ -39,7 +53,7 @@ export default class tableForm extends Component {
         return (<div>
             <h1>Length of Data: {this.state.length}</h1>
 
-            <form onSubmit={this.saveDta}>
+            <form onSubmit={this.saveData}>
                 <div className="form">
                     <label htmlFor="fullName">Full Name</label>
                     <input id="fullName" type="text" name="fullName" value={fullName} onChange={this.inputHandler} />
@@ -66,24 +80,18 @@ export default class tableForm extends Component {
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>Shakhzod M</td>
-                        <td>Shakhzod@gmail.com</td>
-                        <td>100.000</td>
-                    </tr>
-                    <tr>
-                        <td>{fullName}</td>
-                        <td>{email}</td>
-                        <td>{salary}</td>
-                    </tr>
-                    {arr.map((item, index) => {
-                        <tr key={index}>
-                            <td>{item}</td>
-                        </tr>
+                    {this.state.usersList.map((user, index) => {
+                        const { fullName, email, salary } = user;
+                        return (
+                            <tr key={index}>
+                                <td>{fullName}</td>
+                                <td>{email}</td>
+                                <td>{salary}</td>
+                            </tr>
+                        )
                     })}
                 </tbody>
             </table>
-
         </div>);
     }
 }
